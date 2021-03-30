@@ -6,6 +6,10 @@ import express from 'express'
 
 // Local modules
 import mainRouter from './routes/index.js'
+import createRouter from './routes/createImage.js'
+import authorRouter from './routes/authorList.js'
+import detailsRouter from './routes/imageDetails.js'
+import imagesRouter from './routes/imageList.js'
 
 // Variables
 const PORT = process.env.PORT || 5000
@@ -23,6 +27,10 @@ app.set('views', './views')
 
 // Routes
 app.use('/', mainRouter)
+app.use('/create-image', createRouter)
+app.use('/authors', authorRouter)
+app.use('/images', imagesRouter)
+app.use('/details', detailsRouter)
 
 
 // Server starting port
