@@ -37,3 +37,4 @@ router.get('/get-author/:id', (req, res) => {
     res.json(author)
   })
 })
+export default router

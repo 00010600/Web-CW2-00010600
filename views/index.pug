@@ -1,0 +1,12 @@
+extends ./layout
+block main
+    blockquote.flow-text.warning.red-text
+        | This web application was created to fulfill
+        | Web Technology module&rsquo;s requirements and does not represent an actual company or service!
+    .container.center
+        h3#welcome
+            | Upload your first pictures at
+            span.logo-text Ultra Gallery!
+        img.responsive-img.logo(draggable='false' src='static/images/logo.jpg' alt='logo')
+        .btns
+            a.waves-effect.waves-light.btn-large.green.hoverable.center(href='/create-image') Create
