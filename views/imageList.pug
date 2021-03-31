@@ -1,2 +1,22 @@
 extends ./layout
 block main
+    if author
+        h3.center.heading= author
+    else
+        h3.center.heading Gallery
+    .row
+        article.imageList.col.s12.m12
+            if images.length > 0
+              each img in images
+                  .card.col.l3.m6.s12.container.hoverable
+                      .card-image
+                          img.responsive-img(src=`/static/images/${img.photo}`)
+                          a.btn-floating.btn-large.halfway-fab.waves-effect.waves-light.green(href=`/details/${img.id}`)
+                              i.material-icons visibility
+                          button.btn-floating.btn-large.halfway-fab.waves-effect.waves-light.red.left.delete(data-id=`${img.id}`)
+                              i.material-icons delete
+                      .card-content
+                          span.card-title Author: #{img.author}
+                          p= img.description
+            else
+                p.flow-text.center 'There are no images yet!'

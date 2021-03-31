@@ -1,2 +1,11 @@
 extends ./layout
 block main
+    h3.heading.center Authors
+    if authors.length > 0
+      each author in authors
+        .collection.container
+            a.collection-item.flow-text(href=`/images/${author.name}`)
+                | #{author.name}
+                span.right.blue-text Number of images:  #{author.images}
+    else
+        p.flow-text.center There are no authors yet!

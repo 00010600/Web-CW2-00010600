@@ -1,2 +1,12 @@
 extends ./layout
 block main
+    h3.center.heading= image.author
+    .row.center
+        article.imageList.col.s12
+            .card.col.m6.s12.z-depth-2
+                .card-image
+                    img.responsive-img(src=`/static/images/${image.photo}`)
+                .card-content
+                    p= image.description
+                .card-action
+                    a.btn.green(href='/') Main Page

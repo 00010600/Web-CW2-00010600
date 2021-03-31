@@ -21,34 +21,43 @@ router.get('/:author', (req, res) => {
     if (err) res.status(404).render('error', {error: err})
     const imageList = JSON.parse(data)
     const authorImages = imageList.filter(img => img.author === authorName)
-    res.render('imageList', {images: authorImages})
+    res.render('imageList', {images: authorImages, author: authorName})
   })
 })
 // Delete image
 router.post('/:id', (req, res) => {
   const id = req.params.id
   if (id) {
-    fs.readFile(dbAuthorPath, (err, data) => {
-      if (err) return res.status(404).render('error', {error: err})
-      const authorList = JSON.parse(data)
-      const author = authorList.find(auth => auth.name === req.body.author)
-      if (author) author.images--
-      if (author.images === 0) {
-        const index = authorList.findIndex(author)
-        authorList.splice(index, 1)
-      }
-      fs.writeFile(dbPath, JSON.stringify(authorList), (err) => {
-        if (err) res.status(400).render('error', {error: err})
-      })
-    })
-    fs.readFile(dbPath, (err, data) => {
+
+    fs.readFile(dbPath, async (err, data) => {
       if (err) res.status(404).render('error', {error: err})
       const imageList = JSON.parse(data)
       const images = imageList.filter(image => image.id !== id)
+      const image = imageList.find(image => image.id === id)
+      console.log('1: ', image)
 
+      await fs.readFile(dbAuthorPath, (err, data) => {
+        if (err) return res.status(404).render('error', {error: err})
+        const authorList = JSON.parse(data)
+        const author = authorList.find(auth => auth.name === image.author)
+        console.log('inside: ', author)
+        if (author) {
+          author.images--
+          if (author.images <= 0) {
+            const index = authorList.indexOf(author)
+            authorList.splice(index, 1)
+          }
+        }
+        console.log('inside end: ', authorList)
+
+        fs.writeFile(dbAuthorPath, JSON.stringify(authorList), (err) => {
+          if (err) res.status(400).render('error', {error: err})
+        })
+      })
+      console.log('2: ', images)
       fs.writeFile(dbPath, JSON.stringify(images), (err) => {
         if (err) res.status(400).render('error', {error: err})
-        res.render('thank', {Thank: 'Thank you!'})
+        res.render('thank', {thank: 'Thank you!'})
       })
     })
   }

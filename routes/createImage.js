@@ -19,8 +19,7 @@ const upload = multer({storage: storageConfig})
 const dbPath = path.resolve(__dirname, './data/images.json')
 const dbAuthorPath = path.resolve(__dirname, './data/authors.json')
 
-router.route('/')
-    .get((req, res) => {
+router.get('/', (req, res) => {
       res.render('newImage')
     })
 
@@ -30,11 +29,11 @@ router.post('/create-image', upload.single('photo'), (req, res) => {
       id: v4(),
       author: req.body.author || 'Anonymous',
       description: req.body.description,
-      photo: req.file.filename || ''
+      photo: req.file.filename || 'placeholder.jpg'
     }
     const newAuthor = {
       id: v4(),
-      name: req.body.author,
+      name: req.body.author || 'Anonymous',
       images: 1
     }
     fs.readFile(dbAuthorPath, (err, data) => {
@@ -44,7 +43,7 @@ router.post('/create-image', upload.single('photo'), (req, res) => {
       if (author) author.images++
       else authorList.push(newAuthor)
 
-      fs.writeFile(dbPath, JSON.stringify(authorList), (err) => {
+      fs.writeFile(dbAuthorPath, JSON.stringify(authorList), (err) => {
         if (err) res.status(400).render('error', {error: err})
       })
     })

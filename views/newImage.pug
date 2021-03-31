@@ -1,2 +1,37 @@
 extends ./layout
 block main
+    .row.center
+        h3.col.m6.s12.heading Create
+        h3.col.m6.s12.heading Preview
+    .row.create-form
+        form.col.m6.s12.form-create(method='POST' action='/create-image/create-image' enctype='multipart/form-data')
+            .row
+                .input-field.col.s12
+                    i.material-icons.prefix account_circle
+                    input#author.validate(name='author' type='text')
+                    label(for='author') Author name:
+                    span.helper-text(data-error='Please enter your name' data-success='right') Enter your name
+            .row
+                .input-field.col.s12
+                    i.material-icons.prefix mode_edit
+                    textarea#description.materialize-textarea(name='description')
+                    label(for='description') Description:
+                    span.helper-text(data-error='Please enter some description' data-success='right') Enter description of the blog
+            .file-field.input-field
+                .btn.green.lighten-1
+                    span Photo
+                    input(type='file' id='photo' name='photo')
+                .file-path-wrapper
+                    input.file-path(type='text' name='file')
+            .row
+                button.btn.waves-effect.waves-light.green.darken-1(type='submit' name='action')
+                    | Create
+                    i.material-icons.right send
+        .card.col.m4.s12.container.preview
+            .card-image
+                img.responsive-img.preview-img(src='/static/images/placeholder.jpg')
+                a.btn-floating.btn-large.halfway-fab.waves-effect.waves-light.green
+                    i.material-icons visibility
+            .card-content
+                span.card-title.preview-author Author
+                p.preview-description Here goes your description
